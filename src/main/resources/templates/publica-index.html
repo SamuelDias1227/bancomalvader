@@ -1,0 +1,22 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Banco Malvadere - Início</title>
+	
+	<link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+	<script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+	<script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<h2 th:text="${msnBemVindo}"></h2>
+				<a class="btn btn-primary" href="/usuario/novo">Novo usuário</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
