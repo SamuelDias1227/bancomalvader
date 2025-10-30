@@ -3,17 +3,24 @@ package br.com.ucb.bancomalvader.modelo;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,44 +28,46 @@ import jakarta.persistence.Enumerated;
 
 @Entity
 @Table(name = "usuario")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_usuario")
 	private Long id;
-	
+
 	@NotNull
 	@Size(min = 2, message = "O nome deve ter no mínimo {min} carateres")
 	@Column(name = "nome", length = 100, nullable = false)
 	private String nome;
-	
+
 	@CPF(message = "CPF inválido")
 	@Column(name = "cpf", length = 11, nullable = false, unique = true)
 	private String cpf;
-	
+
 	@Past
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "data_nascimento", nullable = false)
 	private LocalDate dataNascimento;
 
+	@NotBlank(message = "O telefone deve ser informado")
 	@Column(name = "telefone", length = 15, nullable = false)
-    private String telefone;
+	private String telefone;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo_usuario", nullable = false, columnDefinition = "ENUM('FUNCIONARIO','CLIENTE')")
+	private TipoUsuario tipoUsuario;
+
+	@NotEmpty(message = "A senha deve ser informada")
+	@Size(min = 8, message = "A senha deve ter no mínimo {min} caracteres")
+	@Column(name = "senha_hash", length = 32, nullable = false)
+	private String password;
 	
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_usuario", nullable = false, columnDefinition = "ENUM('FUNCIONARIO','CLIENTE')")
-    private TipoUsuario tipoUsuario;
-    
-    @NotEmpty(message = "A senha deve ser informada")
-    @Size(min = 8, message = "A senha deve ter no mínimo {min} caracteres")
-    @Column(name = "senha_hash", length = 32, nullable = false)
-    private String password;
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
+	private List<Endereco> enderecos = new ArrayList<>();
 
 	public Long getId() {
 		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getNome() {
@@ -102,5 +111,22 @@ public class Usuario {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-    
+
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
+	
+	public void addEndereco(Endereco endereco) {
+	    enderecos.add(endereco);
+	    endereco.setUsuario(this);
+	}
+
+	public void removeEndereco(Endereco endereco) {
+	    enderecos.remove(endereco);
+	    endereco.setUsuario(null);
+	}
+	
 }
