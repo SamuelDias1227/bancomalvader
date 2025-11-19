@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banco Malvadere - Lista de Contas Investimento</title>
+
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.min.js}"></script>
+
+    <style>
+        .table-actions {
+            white-space: nowrap;
+        }
+
+        .saldo {
+            font-weight: 500;
+        }
+
+        .perfil-risco {
+            font-weight: 500;
+        }
+
+        .data-vencimento {
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="~{fragments/nav :: nav}"></div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h3">Contas Investimento Cadastradas</h1>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Número da Conta</th>
+                                <th>Cliente</th>
+                                <th>Agência</th>
+                                <th>Saldo</th>
+                                <th>Perfil de Risco</th>
+                                <th>Taxa de Rendimento</th>
+                                <th class="table-actions">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${contas == null or contas.empty}">
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    <em>Nenhuma conta investimento cadastrada.</em>
+                                </td>
+                            </tr>
+
+                            <tr th:each="c : ${contas}">
+                                <td th:text="${c.numeroConta}">12345-6</td>
+                                <td th:text="${c.cliente.nome}">Maria Oliveira</td>
+                                <td th:text="${c.agencia.nome}">Agência Central</td>
+                                <td class="saldo" th:text="${c.saldo}">0.00</td>
+                                <td class="perfil-risco" th:text="${c.perfilRisco}">Moderado</td>
+                                <td th:text="${c.taxaRendimentoBase}">taxaRendimento</td>
+                                <td class="table-actions">
+                                    <a th:href="@{/operacao/extrato/{id}(id=${c.id})}">Extrato</a>
+                                    <a th:href="@{'/conta-investimento/editar/' + ${c.id}}"
+                                        class="btn btn-outline-primary btn-sm" title="Editar">
+                                        Editar
+                                    </a>
+                                    <a th:href="@{'/conta-investimento/apagar/' + ${c.id}}"
+                                        class="btn btn-outline-danger btn-sm"
+                                        th:data-confirm-delete="|Deseja apagar a conta ${c.numeroConta}?|"
+                                        onclick="return confirm(this.getAttribute('data-confirm-delete'))"
+                                        title="Apagar">
+                                        Apagar
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

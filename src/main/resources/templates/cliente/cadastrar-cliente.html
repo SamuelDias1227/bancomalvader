@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Banco Malvadere - Cadastro de cliente</title>
+
+		<link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+		<script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+		<script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.min.js}"></script>
+
+		<style>
+			.mensagem {
+				color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div th:replace="~{fragments/nav :: nav}"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<h2>Cadastro de cliente</h2>
+					<div class="alert alert-success alert-dismissible fade show" th:if="${mensagem}">
+						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+						<span th:text="${mensagem}"></span>
+					</div>
+					<form action="#" th:action="@{/cliente/cadastrar}" th:object="${cliente}" method="post">
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">Nome:</label>
+							<div class="col-sm-5">
+								<input class="form-control" type="text" th:field="*{nome}">
+							</div>
+							<div class="col-sm-5">
+								<span class="mensagem" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">CPF:</label>
+							<div class="col-sm-3">
+								<input class="form-control" type="text" th:field="*{cpf}">
+							</div>
+							<div class="col-sm-5">
+								<span class="mensagem" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></span>
+							</div>
+						</div>
+
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">Nascimento:</label>
+							<div class="col-sm-2">
+								<input class="form-control" type="date" th:field="*{dataNascimento}">
+							</div>
+							<div class="col-sm-5">
+								<span class="mensagem" th:if="${#fields.hasErrors('dataNascimento')}"
+									th:errors="*{dataNascimento}"></span>
+							</div>
+						</div>
+
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">Telefone:</label>
+							<div class="col-sm-2">
+								<input class="form-control" type="tel" th:field="*{telefone}">
+							</div>
+							<div class="col-sm-5">
+								<span class="mensagem" th:if="${#fields.hasErrors('telefone')}"
+									th:errors="*{telefone}"></span>
+							</div>
+						</div>
+
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">Senha:</label>
+							<div class="col-sm-2">
+								<input class="form-control" type="password" th:field="*{password}">
+							</div>
+							<div class="col-sm-5">
+								<span class="mensagem" th:if="${#fields.hasErrors('password')}"
+									th:errors="*{password}"></span>
+							</div>
+						</div>
+
+						<h4>Endereço</h4>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">CEP:</label>
+							<div class="col-sm-2">
+								<input class="form-control" type="text" th:field="*{endereco.cep}" placeholder="00000000">
+							</div>
+							<div class="col-sm-5">
+								<span class="mensagem" th:if="${#fields.hasErrors('endereco.cep')}"
+									th:errors="*{endereco.cep}"></span>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">Logradouro:</label>
+							<div class="col-sm-5">
+								<input class="form-control" type="text" th:field="*{endereco.local}">
+							</div>
+							<div class="col-sm-5">
+								<span class="mensagem" th:if="${#fields.hasErrors('endereco.local')}"
+									th:errors="*{endereco.local}"></span>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">Número:</label>
+							<div class="col-sm-2">
+								<input class="form-control" type="number" th:field="*{endereco.numeroCasa}" min="1">
+							</div>
+							<div class="col-sm-3">
+								<span class="mensagem" th:if="${#fields.hasErrors('endereco.numeroCasa')}"
+									th:errors="*{endereco.numeroCasa}"></span>
+							</div>
+
+							<label class="col-sm-1 col-form-label">Complemento:</label>
+							<div class="col-sm-3">
+								<input class="form-control" type="text" th:field="*{endereco.complemento}">
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">Bairro:</label>
+							<div class="col-sm-4">
+								<input class="form-control" type="text" th:field="*{endereco.bairro}">
+							</div>
+							<div class="col-sm-5">
+								<span class="mensagem" th:if="${#fields.hasErrors('endereco.bairro')}"
+									th:errors="*{endereco.bairro}"></span>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">Cidade:</label>
+							<div class="col-sm-4">
+								<input class="form-control" type="text" th:field="*{endereco.cidade}">
+							</div>
+							<div class="col-sm-5">
+								<span class="mensagem" th:if="${#fields.hasErrors('endereco.cidade')}"
+									th:errors="*{endereco.cidade}"></span>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<label class="col-sm-1 col-form-label">Estado:</label>
+							<div class="col-sm-1">
+								<input class="form-control" type="text" th:field="*{endereco.estado}" maxlength="2"
+									style="text-transform:uppercase">
+							</div>
+							<div class="col-sm-2">
+								<span class="mensagem" th:if="${#fields.hasErrors('endereco.estado')}"
+									th:errors="*{endereco.estado}"></span>
+							</div>
+						</div>
+
+						<input class="btn btn-primary" type="submit" value="Gravar" />
+
+					</form>
+
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>

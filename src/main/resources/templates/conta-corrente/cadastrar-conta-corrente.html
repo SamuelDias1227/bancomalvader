@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Conta Corrente</title>
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.min.js}"></script>
+    <style>
+        body {
+            background: #f3f6fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        h2 {
+            font-weight: 600;
+            color: #0d6efd;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            margin-top: 40px;
+            max-width: 900px;
+        }
+
+        .form-card {
+            background: #fff;
+            padding: 35px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e1e8f0;
+        }
+
+        label {
+            font-weight: 600;
+            color: #4a4a4a;
+        }
+
+        input.form-control, select.form-control {
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid #cfd8e3;
+        }
+
+        input.form-control:focus, select.form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 4px #0d6efd80;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0d6efd, #0a58ca);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.03);
+            background: linear-gradient(135deg, #0a58ca, #0948a8);
+        }
+
+        .mensagem {
+            color: #d9534f;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<div class="container">
+    <div class="form-card">
+        <h2>Cadastrar Conta Corrente</h2>
+
+        <form th:action="@{/conta-corrente/cadastrar}" th:object="${contaCorrente}" method="post">
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Saldo Inicial:</label>
+                <div class="col-sm-3">
+                    <input class="form-control" type="number" step="0.01" th:field="*{saldo}" />
+                </div>
+                <div class="col-sm-5">
+                    <span class="mensagem" th:if="${#fields.hasErrors('saldo')}" th:errors="*{saldo}"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Agência:</label>
+                <div class="col-sm-3">
+                    <select class="form-control" th:field="*{agencia.id}">
+                        <option value="">Selecione...</option>
+                        <option th:each="ag : ${agencias}" th:value="${ag.id}" th:text="${ag.nome}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Cliente:</label>
+                <div class="col-sm-4">
+                    <select class="form-control" th:field="*{cliente.id}">
+                        <option value="">Selecione...</option>
+                        <option th:each="cl : ${clientes}" th:value="${cl.id}" th:text="${cl.nome}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Limite:</label>
+                <div class="col-sm-3">
+                    <input class="form-control" type="number" step="0.01" th:field="*{limite}" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Data de Vencimento:</label>
+                <div class="col-sm-3">
+                    <input class="form-control" type="date" th:field="*{dataVencimento}" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Taxa de Manutenção:</label>
+                <div class="col-sm-3">
+                    <input class="form-control" type="number" step="0.01" th:field="*{taxaManutencao}" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2">
+                    <input class="btn btn-primary" type="submit" value="Salvar" />
+                </div>
+                <div class="col-sm-2">
+                    <a class="btn btn-secondary" th:href="@{/conta-corrente/listar}">Voltar</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

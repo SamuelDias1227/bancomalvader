@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banco Malvader - Lista de Usuários</title>
+
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.min.js}"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101010, #1c1c1c);
+            color: #fff;
+            min-height: 100vh;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 25px;
+            font-weight: 700;
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .container {
+            margin-top: 30px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+        }
+
+        .table tbody tr {
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-outline-primary {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+        .btn-outline-primary:hover {
+            background: #00d4ff;
+            color: #000;
+        }
+
+        .btn-outline-danger {
+            border-color: #ff3b3b;
+            color: #ff3b3b;
+        }
+        .btn-outline-danger:hover {
+            background: #ff3b3b;
+            color: #fff;
+        }
+
+        /* SCROLL HORIZONTAL SUAVE */
+        .table-responsive {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="~{fragments/nav :: nav}"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <h1>Lista de Usuários</h1>
+
+                <div class="table-responsive mt-4">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Nascimento</th>
+                                <th>Telefone</th>
+                                <th>Tipo</th>
+                                <th>Endereço</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${usuarios == null or usuarios.empty}">
+                                <td colspan="7" class="text-center text-warning">Sem usuários</td>
+                            </tr>
+
+                            <tr th:each="usuario : ${usuarios}">
+                                <td><span th:text="${usuario.nome}"> Nome </span></td>
+                                <td><span th:text="${usuario.cpf}"> Cpf </span></td>
+                                <td><span th:text="${usuario.dataNascimento}"> Nascimento </span></td>
+                                <td><span th:text="${usuario.telefone}"> Telefone </span></td>
+                                <td><span th:text="${usuario.tipoUsuario}"> Tipo </span></td>
+
+                                <td>
+                                    <span th:text="${usuario.endereco.local} + ', ' + ${usuario.endereco.numeroCasa}"></span>
+                                    <br>
+                                    <small th:text="${usuario.endereco.bairro} + ' - ' + ${usuario.endereco.cidade} + '/' + ${usuario.endereco.estado}"></small>
+                                </td>
+
+                                <td>
+                                    <a class="btn btn-outline-primary btn-sm"
+                                       title="Editar"
+                                       th:href="@{/usuario/editar/{id}(id=${usuario.id})}">
+                                        Editar
+                                    </a>
+
+                                    <a class="btn btn-outline-danger btn-sm mt-1"
+                                       title="Apagar"
+                                       th:href="@{/usuario/apagar/{id}(id=${usuario.id})}"
+                                       th:data-confirm-delete="|Deseja realmente apagar o usuário ${usuario.nome}?|"
+                                       onclick="return confirm(this.getAttribute('data-confirm-delete'))">
+                                        Apagar
+                                    </a>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

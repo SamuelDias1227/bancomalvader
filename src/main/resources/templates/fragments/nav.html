@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="nav" class="navbar navbar-expand-lg nav-premium">
+    <div class="container-fluid">
+        <a class="navbar-brand brand-premium" href="/">Banco Malvader</a>
+
+        <button class="navbar-toggler toggler-premium" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+
+                <li class="nav-item">
+                    <a class="nav-link link-premium active" aria-current="page" href="/">Home</a>
+                </li>
+
+                <!-- Cadastros -->
+                <li class="nav-item"><a class="nav-link link-premium" href="/agencia/novo">Cadastrar agência</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/usuario/novo">Cadastrar usuário</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/funcionario/novo">Cadastrar funcionário</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/cliente/novo">Cadastrar cliente</a></li>
+
+                <li class="nav-item"><a class="nav-link link-premium" href="/conta-corrente/novo">Cadastrar Conta Corrente</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/conta-poupanca/novo">Cadastrar Conta Poupança</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/conta-investimento/novo">Cadastrar Conta Investimento</a></li>
+
+                <!-- Listagens -->
+                <li class="nav-item"><a class="nav-link link-premium" href="/agencia/listar">Listar todas agências</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/usuario/listar">Listar todos usuários</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/funcionario/listar">Listar todos funcionários</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/cliente/listar">Listar todos clientes</a></li>
+
+                <li class="nav-item"><a class="nav-link link-premium" href="/conta-corrente/listar">Listar Contas Corrente</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/conta-poupanca/listar">Listar Contas Poupança</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/conta-investimento/listar">Listar Contas Investimento</a></li>
+
+                <!-- Operações -->
+                <li class="nav-item"><a class="nav-link link-premium" href="/operacao/deposito">Depósito</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/operacao/saque">Saque</a></li>
+                <li class="nav-item"><a class="nav-link link-premium" href="/operacao/transferencia">Transferência</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

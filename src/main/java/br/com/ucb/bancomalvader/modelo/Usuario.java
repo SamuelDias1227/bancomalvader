@@ -5,17 +5,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,6 +31,8 @@ import jakarta.persistence.Enumerated;
 @Entity
 @Table(name = "usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Getter
+@Setter
 public class Usuario {
 
 	@Id
@@ -45,7 +49,8 @@ public class Usuario {
 	@Column(name = "cpf", length = 11, nullable = false, unique = true)
 	private String cpf;
 
-	@Past
+	@Past(message = "A data de nascimento deve estar no passado")
+	@NotNull(message = "A data de nascimento deve ser informada")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "data_nascimento", nullable = false)
 	private LocalDate dataNascimento;
@@ -55,78 +60,17 @@ public class Usuario {
 	private String telefone;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "tipo_usuario", nullable = false, columnDefinition = "ENUM('FUNCIONARIO','CLIENTE')")
+	@Column(name = "tipo_usuario", nullable = false, columnDefinition = "ENUM('ADMIN','FUNCIONARIO','CLIENTE')")
 	private TipoUsuario tipoUsuario;
 
 	@NotEmpty(message = "A senha deve ser informada")
 	@Size(min = 8, message = "A senha deve ter no mínimo {min} caracteres")
 	@Column(name = "senha_hash", length = 32, nullable = false)
 	private String password;
-	
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
-	private List<Endereco> enderecos = new ArrayList<>();
 
-	public Long getId() {
-		return id;
-	}
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "endereco_id", referencedColumnName = "id_endereco", nullable = false, unique = true)
+	@Valid
+	private Endereco endereco;
 
-	public String getNome() {
-		return nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public LocalDate getDataNascimento() {
-		return dataNascimento;
-	}
-	public void setDataNascimento(LocalDate dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
-	public TipoUsuario getTipoUsuario() {
-		return tipoUsuario;
-	}
-	public void setTipoUsuario(TipoUsuario tipoUsuario) {
-		this.tipoUsuario = tipoUsuario;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public List<Endereco> getEnderecos() {
-		return enderecos;
-	}
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
-	
-	public void addEndereco(Endereco endereco) {
-	    enderecos.add(endereco);
-	    endereco.setUsuario(this);
-	}
-
-	public void removeEndereco(Endereco endereco) {
-	    enderecos.remove(endereco);
-	    endereco.setUsuario(null);
-	}
-	
 }

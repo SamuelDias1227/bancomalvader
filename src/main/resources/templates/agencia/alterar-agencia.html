@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Banco Malvadere - Editar Agência</title>
+
+        <link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+        <script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+        <script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js}"></script>
+
+        <style>
+            .mensagem {
+                color: red;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div th:replace="~{fragments/nav :: nav}"></div>
+        <div class="container">
+            <div class="row">  	
+                <div class="col">
+
+                    <h2>Alterar Agência</h2>
+
+                    <form th:action="@{/agencia/editar/{id}(id=${agencia.id})}" th:object="${agencia}" method="post">
+
+                        <h4>Dados Pessoais</h4>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-1 col-form-label">Nome:</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" type="text" th:field="*{nome}"> 
+                            </div>
+                            <div class="col-sm-5"> 
+                                <span class="mensagem" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-1 col-form-label">Código:</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" type="text" th:field="*{codigoAgencia}" readonly>
+                            </div>
+                        </div>
+
+                        <h4>Endereço da Agência</h4>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-1 col-form-label">CEP:</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" type="text" th:field="*{endereco.cep}" id="cep"
+                                    placeholder="00000000">
+                            </div>
+                            <div class="col-sm-5">
+                                <span class="mensagem" th:if="${#fields.hasErrors('endereco.cep')}" th:errors="*{endereco.cep}"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-1 col-form-label">Logradouro:</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" type="text" th:field="*{endereco.local}" id="local">
+                            </div>
+                            <div class="col-sm-5">
+                                <span class="mensagem" th:if="${#fields.hasErrors('endereco.local')}" th:errors="*{endereco.local}"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-1 col-form-label">Número:</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" type="number" th:field="*{endereco.numeroCasa}" min="1" id="numeroCasa">
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="col-sm-3 col-form-label">Complemento:</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="text" th:field="*{endereco.complemento}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-1 col-form-label">Bairro:</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" type="text" th:field="*{endereco.bairro}" id="bairro">
+                            </div>
+                            <div class="col-sm-5">
+                                <span class="mensagem" th:if="${#fields.hasErrors('endereco.bairro')}" th:errors="*{endereco.bairro}"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-1 col-form-label">Cidade:</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" type="text" th:field="*{endereco.cidade}" id="cidade">
+                            </div>
+                            <div class="col-sm-5">
+                                <span class="mensagem" th:if="${#fields.hasErrors('endereco.cidade')}"
+                                    th:errors="*{endereco.cidade}"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-1 col-form-label">Estado:</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" type="text" th:field="*{endereco.estado}" id="estado" maxlength="2"
+                                    style="text-transform: uppercase">
+                            </div>
+                            <div class="col-sm-5">
+                                <span class="mensagem" th:if="${#fields.hasErrors('endereco.estado')}"
+                                    th:errors="*{endereco.estado}"></span>
+                            </div>
+                        </div>
+
+                        <input  class="btn btn-primary" type="submit" value="Alterar"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banco Malvadere - Editar Conta Corrente</title>
+
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js}"></script>
+
+    <style>
+        body {
+            background-color: #f5f7fa;
+        }
+
+        .container-card {
+            background: white;
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
+        }
+
+        h2 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        h4 {
+            margin-top: 25px;
+            font-weight: 500;
+            color: #0d6efd;
+        }
+
+        .mensagem {
+            color: #d9534f;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="~{fragments/nav :: nav}"></div>
+
+    <div class="container container-card">
+        <div class="row">
+            <div class="col">
+
+                <h2 class="text-center">Editar Conta Corrente</h2>
+
+                <form th:action="@{'/conta-corrente/editar/' + ${contaCorrente.id}}"
+                      th:object="${contaCorrente}" method="post">
+
+                    <h4>Dados da Conta</h4>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Número da Conta:</label>
+                        <div class="col-sm-4">
+                            <input class="form-control" type="text" th:field="*{numeroConta}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Data de Abertura:</label>
+                        <div class="col-sm-4">
+                            <input class="form-control" type="text"
+                                   th:value="${#temporals.format(contaCorrente.dataAbertura, 'dd/MM/yyyy HH:mm')}"
+                                   readonly>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Saldo:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="number" step="0.01" th:field="*{saldo}">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="mensagem" th:if="${#fields.hasErrors('saldo')}" th:errors="*{saldo}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Status:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" th:field="*{status}" readonly>
+                        </div>
+                    </div>
+
+                    <h4>Relacionamentos</h4>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Agência:</label>
+                        <div class="col-sm-4">
+                            <select class="form-select" th:field="*{agencia.id}">
+                                <option th:each="ag : ${agencias}" th:value="${ag.id}" th:text="${ag.nome}"
+                                        th:selected="${ag.id == contaCorrente.agencia?.id}"></option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="mensagem" th:if="${#fields.hasErrors('agencia')}" th:errors="*{agencia}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Cliente:</label>
+                        <div class="col-sm-4">
+                            <select class="form-select" th:field="*{cliente.id}">
+                                <option th:each="cl : ${clientes}" th:value="${cl.id}" th:text="${cl.nome}"
+                                        th:selected="${cl.id == contaCorrente.cliente?.id}"></option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="mensagem" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></span>
+                        </div>
+                    </div>
+
+                    <h4>Configurações da Conta</h4>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Limite:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="number" step="0.01" th:field="*{limite}">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="mensagem" th:if="${#fields.hasErrors('limite')}" th:errors="*{limite}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Data de Vencimento:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="date" th:field="*{dataVencimento}">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="mensagem" th:if="${#fields.hasErrors('dataVencimento')}"
+                                  th:errors="*{dataVencimento}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <label class="col-sm-2 col-form-label">Taxa de Manutenção:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="number" step="0.01" th:field="*{taxaManutencao}">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="mensagem" th:if="${#fields.hasErrors('taxaManutencao')}"
+                                  th:errors="*{taxaManutencao}"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <input class="btn btn-primary px-4" type="submit" value="Salvar Alterações">
+                        <a th:href="@{/conta-corrente/listar}" class="btn btn-secondary ms-2">Voltar</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

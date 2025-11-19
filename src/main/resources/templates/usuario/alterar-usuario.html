@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banco Malvader - Editar Usuário</title>
+
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js}"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101010, #1c1c1c);
+            color: #fff;
+            min-height: 100vh;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .container {
+            margin-top: 40px;
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        h4 {
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #00d4ff;
+            border-left: 4px solid #00d4ff;
+            padding-left: 10px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #d0d0d0;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #00d4ff;
+            box-shadow: 0 0 8px rgba(0,212,255,0.4);
+            color: #fff;
+        }
+
+        .mensagem {
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #00d4ff;
+            border: none;
+            font-weight: 600;
+            padding: 10px 25px;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #00a8c7;
+            box-shadow: 0 0 10px rgba(0,212,255,0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="~{fragments/nav :: nav}"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <h2>Alterar Usuário</h2>
+
+                <form th:action="@{/usuario/editar/{id}(id=${usuario.id})}" th:object="${usuario}" method="post">
+
+                    <h4>Dados Pessoais</h4>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">Nome:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" th:field="*{nome}">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">CPF:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" th:field="*{cpf}">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">Nascimento:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="text" th:field="*{dataNascimento}">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">Telefone:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="text" th:field="*{telefone}">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">Nova Senha:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="password" th:field="*{password}">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                        </div>
+                    </div>
+
+                    <h4>Endereço</h4>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">CEP:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="text" th:field="*{endereco.cep}" id="cep" placeholder="00000000">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('endereco.cep')}" th:errors="*{endereco.cep}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">Logradouro:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="text" th:field="*{endereco.local}" id="local">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('endereco.local')}" th:errors="*{endereco.local}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">Número:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="number" th:field="*{endereco.numeroCasa}" min="1" id="numeroCasa">
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="col-sm-3 col-form-label">Complemento:</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" type="text" th:field="*{endereco.complemento}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">Bairro:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="text" th:field="*{endereco.bairro}" id="bairro">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('endereco.bairro')}" th:errors="*{endereco.bairro}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">Cidade:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="text" th:field="*{endereco.cidade}" id="cidade">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('endereco.cidade')}" th:errors="*{endereco.cidade}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label">Estado:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="text" th:field="*{endereco.estado}" id="estado" maxlength="2" style="text-transform: uppercase">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('endereco.estado')}" th:errors="*{endereco.estado}"></span>
+                        </div>
+                    </div>
+
+                    <input class="btn btn-primary" type="submit" value="Alterar"/>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

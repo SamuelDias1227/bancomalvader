@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banco Malvadere - Editar Funcionário</title>
+
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js}"></script>
+
+    <style>
+        body {
+            background-color: #f5f7fa;
+        }
+
+        .container-card {
+            background: white;
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
+        }
+
+        h2 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        h4 {
+            margin-top: 25px;
+            font-weight: 500;
+            color: #0d6efd;
+        }
+
+        .mensagem {
+            color: #d9534f;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<div class="container container-card">
+    <div class="row">
+        <div class="col">
+
+            <h2 class="text-center">Alterar Funcionário</h2>
+
+            <form th:action="@{/funcionario/editar/{id}(id=${funcionario.id})}"
+                  th:object="${funcionario}"
+                  method="post">
+
+                <h4>Dados Pessoais</h4>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Nome:</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" th:field="*{nome}">
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">CPF:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="text" th:field="*{cpf}">
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Nascimento:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="text" th:field="*{dataNascimento}">
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Telefone:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="text" th:field="*{telefone}">
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Tipo:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select" th:field="*{tipoUsuario}">
+                            <option value="CLIENTE">Cliente</option>
+                            <option value="FUNCIONARIO">Funcionário</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Nova Senha:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="password" th:field="*{password}">
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                    </div>
+                </div>
+                <h4>Dados do Funcionário</h4>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Código:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="text" th:field="*{codigoFuncionario}" readonly>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Cargo:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select" th:field="*{cargo}">
+                            <option value="ESTAGIARIO">Estagiário</option>
+                            <option value="ATENDENTE">Atendente</option>
+                            <option value="GERENTE">Gerente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Agência:</label>
+                    <div class="col-sm-4">
+                        <select class="form-select" th:field="*{agencia.id}">
+                            <option th:each="ag : ${agencias}"
+                                    th:value="${ag.id}"
+                                    th:text="${ag.nome} + ' (' + ${ag.codigoAgencia} + ')'"
+                                    th:selected="${ag.id == funcionario.agencia?.id}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('agencia')}" th:errors="*{agencia}"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Supervisor:</label>
+                    <div class="col-sm-4">
+                        <select class="form-select" th:field="*{supervisor.id}">
+                            <option value="">Nenhum</option>
+                            <option th:each="sup : ${supervisores}"
+                                    th:value="${sup.id}"
+                                    th:text="${sup.nome + ' (' + sup.cargo + ')'}"
+                                    th:selected="${sup.id == funcionario.supervisor?.id}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <h4>Endereço</h4>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">CEP:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="text" th:field="*{endereco.cep}" id="cep">
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('endereco.cep')}" th:errors="*{endereco.cep}"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Logradouro:</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" th:field="*{endereco.local}" id="local">
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('endereco.local')}" th:errors="*{endereco.local}"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Número:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="number" th:field="*{endereco.numeroCasa}" id="numeroCasa">
+                    </div>
+
+                    <label class="col-sm-2 col-form-label">Complemento:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="text" th:field="*{endereco.complemento}">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Bairro:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="text" th:field="*{endereco.bairro}" id="bairro">
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('endereco.bairro')}" th:errors="*{endereco.bairro}"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Cidade:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="text" th:field="*{endereco.cidade}" id="cidade">
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('endereco.cidade')}" th:errors="*{endereco.cidade}"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <label class="col-sm-2 col-form-label">Estado:</label>
+                    <div class="col-sm-2">
+                        <input class="form-control" type="text" th:field="*{endereco.estado}" id="estado"
+                               maxlength="2" style="text-transform: uppercase">
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="mensagem" th:if="${#fields.hasErrors('endereco.estado')}" th:errors="*{endereco.estado}"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <input class="btn btn-primary px-4" type="submit" value="Alterar">
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

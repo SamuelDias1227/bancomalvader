@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Banco Malvadere - Lista de Clientes</title>
+
+        <link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+        <script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+        <script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.min.js}"></script>
+    </head>
+    <body>
+        <div th:replace="~{fragments/nav :: nav}"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1>Lista de Clientes</h1>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CPF</th>
+                                    <th>Nascimento</th>
+                                    <th>Telefone</th>
+                                    <th>Tipo</th>
+                                    <th>Endereço</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr th:if="${clientes == null or clientes.empty}">
+                                    <td colspan="7" class="text-center text-warning">Sem usuários</td>
+                                </tr>
+
+                                <tr th:each="cliente : ${clientes}">
+                                    <td><span th:text="${cliente.nome}"> Nome </span></td>
+                                    <td><span th:text="${cliente.cpf}"> Cpf </span></td>
+                                    <td><span th:text="${cliente.dataNascimento}"> Nascimento </span></td>
+                                    <td><span th:text="${cliente.telefone}"> Telefone </span></td>
+                                    <td><span th:text="${cliente.tipoUsuario}"> Tipo </span></td>
+
+                                    <td>
+                                        <span th:text="${cliente.endereco.local} + ', ' + ${cliente.endereco.numeroCasa}"></span>
+                                        <br>
+                                        <small th:text="${cliente.endereco.bairro} + ' - ' + ${cliente.endereco.cidade} + '/' + ${cliente.endereco.estado}"></small>
+                                    </td>
+
+                                    <td>
+                                        <a class="btn btn-outline-primary btn-sm"
+                                        title="Editar"
+                                        th:href="@{/cliente/editar/{id}(id=${cliente.id})}">
+                                            Editar
+                                        </a>
+
+                                        <a class="btn btn-outline-danger btn-sm mt-1"
+                                        title="Apagar"
+                                        th:href="@{/cliente/apagar/{id}(id=${cliente.id})}"
+                                        th:data-confirm-delete="|Deseja realmente apagar o usuário ${cliente.nome}?|"
+                                        onclick="return confirm(this.getAttribute('data-confirm-delete'))">
+                                            Apagar
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banco Malvadere - Extrato</title>
+
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js}"></script>
+
+    <style>
+        body { background-color: #f5f7fa; }
+        .container-card {
+            background: white;
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.08);
+        }
+        h2 { font-weight: 600; margin-bottom: 20px; }
+        table { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<div class="container container-card">
+    <h2 class="text-center">Extrato - Conta <span th:text="${conta.numeroConta}"></span></h2>
+
+    <table class="table table-hover table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Data/Hora</th>
+                <th>Tipo</th>
+                <th>Origem</th>
+                <th>Destino</th>
+                <th>Valor</th>
+                <th>Descrição</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="t : ${transacoes}">
+                <td th:text="${#temporals.format(t.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${t.tipoTransacao}"></td>
+                <td th:text="${t.contaOrigem != null ? t.contaOrigem.numeroConta : '-'}"></td>
+                <td th:text="${t.contaDestino != null ? t.contaDestino.numeroConta : '-'}"></td>
+                <td th:text="${t.valor}"></td>
+                <td th:text="${t.descricao}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-end mt-3">
+        <a class="btn btn-secondary" th:href="@{/}">Voltar</a>
+    </div>
+</div>
+
+</body>
+</html>

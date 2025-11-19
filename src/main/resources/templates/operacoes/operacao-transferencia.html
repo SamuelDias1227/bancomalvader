@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banco Malvadere - Transferência</title>
+
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.8-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.7.1-dist/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js}"></script>
+
+    <style>
+        body { background-color: #f5f7fa; }
+        .container-card {
+            background: white;
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.08);
+        }
+        h2 { font-weight: 600; margin-bottom: 20px; }
+        .mensagem { color: #198754; font-size: 0.9rem; }
+        .erro { color: #d9534f; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<div class="container container-card">
+    <h2 class="text-center">Transferência</h2>
+
+    <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
+    <div th:if="${erro}" class="alert alert-danger" th:text="${erro}"></div>
+
+    <form th:action="@{/operacao/transferencia}" method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Conta de Origem:</label>
+            <select class="form-select" name="contaOrigemId">
+                <option th:each="c : ${contas}" th:value="${c.id}" th:text="${c.numeroConta + ' - ' + c.cliente.nome}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Conta de Destino:</label>
+            <select class="form-select" name="contaDestinoId">
+                <option th:each="c : ${contas}" th:value="${c.id}" th:text="${c.numeroConta + ' - ' + c.cliente.nome}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Valor:</label>
+            <input type="number" step="0.01" class="form-control" name="valor" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descrição (opcional):</label>
+            <input type="text" class="form-control" name="descricao">
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Transferir</button>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>
